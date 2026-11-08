@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:podcast="https://podcastindex.org/namespace/1.0">
   <channel>
     <title>Learning Lab</title>
     <link>https://christopherchiu.github.io/learning-lab</link>
@@ -11,6 +11,8 @@
     <itunes:category text="Education"/>
     <itunes:explicit>false</itunes:explicit>
     <itunes:type>episodic</itunes:type>
+    <podcast:locked>yes</podcast:locked>
+    <podcast:guid>1b2bb7eb-3ed8-5fc7-ba6a-0d6502ec1369</podcast:guid>
     <itunes:summary>Chris&#x27;s personal audio lessons, researched, written and narrated by his Learning Coach agent.</itunes:summary>
     <item>
       <title>Redesigning source control at Anthropic</title>
