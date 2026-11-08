@@ -115,7 +115,8 @@ feed = f"""<?xml version="1.0" encoding="UTF-8"?>
     <itunes:image href="{esc(base)}/cover.png"/>
     <itunes:category text="Education"/>
     <itunes:explicit>false</itunes:explicit>
-    <itunes:block>Yes</itunes:block>
+    <itunes:type>episodic</itunes:type>
+    <itunes:summary>{esc(cfg.get('description'))}</itunes:summary>
 {chr(10).join(items)}
   </channel>
 </rss>

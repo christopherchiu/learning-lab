@@ -10,7 +10,8 @@
     <itunes:image href="https://christopherchiu.github.io/learning-lab/cover.png"/>
     <itunes:category text="Education"/>
     <itunes:explicit>false</itunes:explicit>
-    <itunes:block>Yes</itunes:block>
+    <itunes:type>episodic</itunes:type>
+    <itunes:summary>Chris&#x27;s personal audio lessons, researched, written and narrated by his Learning Coach agent.</itunes:summary>
     <item>
       <title>Redesigning source control at Anthropic</title>
       <description>Audio adaptation of Anthropic’s Scion post: why git broke at 30k merges/day, how a changeset-based VCS and three-tier cache replaced mirrors, and why they still don’t want you to fork git.
