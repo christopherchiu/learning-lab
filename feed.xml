@@ -12,6 +12,20 @@
     <itunes:explicit>false</itunes:explicit>
     <itunes:block>Yes</itunes:block>
     <item>
+      <title>Redesigning source control at Anthropic</title>
+      <description>Audio adaptation of Anthropic’s Scion post: why git broke at 30k merges/day, how a changeset-based VCS and three-tier cache replaced mirrors, and why they still don’t want you to fork git.
+
+Source: https://www.anthropic.com/research/redesigning-source-control
+
+Read the full lesson: https://christopherchiu.github.io/learning-lab/#/2026-11-07-redesigning-source-control</description>
+      <guid isPermaLink="false">2026-11-07-redesigning-source-control</guid>
+      <pubDate>Sun, 08 Nov 2026 07:15:00 +0000</pubDate>
+      <link>https://christopherchiu.github.io/learning-lab/#/2026-11-07-redesigning-source-control</link>
+      <enclosure url="https://christopherchiu.github.io/learning-lab/audio/2026-11-07-redesigning-source-control.mp3" length="6398162" type="audio/mpeg"/>
+      <itunes:duration>799</itunes:duration>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
       <title>Welcome to Learning Lab</title>
       <description>How your personal audio lessons work: send a link, get a researched, blog-quality lesson narrated for you.
 

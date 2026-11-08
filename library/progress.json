@@ -1,10 +1,62 @@
 {
   "learner": {
     "name": "Chris",
-    "background": "Engineering leader; likes technical depth (Anthropic / OpenAI engineering-blog style).",
+    "background": "Head of engineering; fluent in AI and engineering topics. Skip basics, expand the genuinely technical parts.",
     "prefers": "Audio-first, ~10 minute lessons, links to tweets/blogs as starting points."
   },
-  "concepts": [],
-  "suggested_next": [],
-  "feedback_log": []
+  "concepts": [
+    {
+      "name": "Agent-scale source control (Scion)",
+      "level": "working",
+      "lessons": ["2026-11-07-redesigning-source-control"],
+      "last_seen": "2026-11-07"
+    },
+    {
+      "name": "Monorepo VCS (git vs centralized/changeset models)",
+      "level": "working",
+      "lessons": ["2026-11-07-redesigning-source-control"],
+      "last_seen": "2026-11-07"
+    },
+    {
+      "name": "Derived data / Bonsai-style changesets",
+      "level": "intro",
+      "lessons": ["2026-11-07-redesigning-source-control"],
+      "last_seen": "2026-11-07"
+    },
+    {
+      "name": "Post-merge CI vs merge queues at agent volume",
+      "level": "intro",
+      "lessons": ["2026-11-07-redesigning-source-control"],
+      "last_seen": "2026-11-07"
+    }
+  ],
+  "suggested_next": [
+    {
+      "topic": "Meta Sapling / Mononoke Bonsai in more depth",
+      "why": "Scion’s changeset + derived-data design is explicitly Bonsai-shaped; this is the primary prior art.",
+      "source_url": "https://sapling-scm.com/"
+    },
+    {
+      "topic": "Google Piper / CitC virtual workspaces",
+      "why": "The other cited monorepo VCS; useful contrast on always-online clients and sparse working copies.",
+      "source_url": "https://en.wikipedia.org/wiki/Piper_(source_control_system)"
+    },
+    {
+      "topic": "Merge queues vs post-merge testing at high land rate",
+      "why": "Anthropic dropped the global merge lock; this is the operational decision most orgs will face first.",
+      "source_url": "https://www.anthropic.com/research/redesigning-source-control"
+    },
+    {
+      "topic": "Claude Tag / agent-operated production health",
+      "why": "The ‘superfan’ ops pattern is a concrete next step from this post’s lessons.",
+      "source_url": "https://www.anthropic.com/news/introducing-claude-tag"
+    }
+  ],
+  "feedback_log": [
+    {
+      "date": "2026-11-07",
+      "lesson": "2026-11-07-redesigning-source-control",
+      "note": "For blog posts, often wants a faithful audio adaptation of the post with technical expansions rather than a full research lesson."
+    }
+  ]
 }

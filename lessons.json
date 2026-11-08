@@ -1,8 +1,58 @@
 {
   "title": "Learning Lab",
   "base_url": "https://christopherchiu.github.io/learning-lab",
-  "updated_at": "2026-11-08T06:57:01.089931+00:00",
+  "updated_at": "2026-11-08T07:03:22.320216+00:00",
   "lessons": [
+    {
+      "title": "Redesigning source control at Anthropic",
+      "summary": "Audio adaptation of Anthropic\u2019s Scion post: why git broke at 30k merges/day, how a changeset-based VCS and three-tier cache replaced mirrors, and why they still don\u2019t want you to fork git.",
+      "source_type": "blog",
+      "source_url": "https://www.anthropic.com/research/redesigning-source-control",
+      "topics": [
+        "Source control",
+        "Developer infrastructure",
+        "Agentic coding",
+        "Monorepos"
+      ],
+      "created_at": "2026-11-08T07:15:00Z",
+      "duration_secs": 799.7,
+      "quiz": [
+        {
+          "q": "Why did git\u2019s design become the bottleneck rather than a feature?",
+          "a": "Git assumes complete offline clones; Anthropic\u2019s always-online agents and CI hit ~100 GB history tens of millions of times a day, which mirrors could not absorb."
+        },
+        {
+          "q": "What is a Scion changeset compared with a git commit?",
+          "a": "A write-ahead-log entry of files changed vs the first parent plus content-addressed blobs, not a full tree; blame and history are derived data."
+        },
+        {
+          "q": "What do they want other companies to copy?",
+          "a": "Not Scion itself\u2014server-side source-control APIs, cacheable immutable fetches, and sparse checkouts that compose inside git forges."
+        }
+      ],
+      "related": [
+        {
+          "title": "Mononoke (Sapling server)",
+          "url": "https://github.com/facebook/sapling/blob/main/eden/mononoke/README.md",
+          "why": "Prior art Scion cites for Bonsai-style changesets and derived data."
+        },
+        {
+          "title": "Simon Willison\u2019s notes",
+          "url": "https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/",
+          "why": "Concise practitioner summary and the offline-support critique."
+        },
+        {
+          "title": "The Pragmatic Engineer Pulse",
+          "url": "https://blog.pragmaticengineer.com/the-pulse-anthropic-builds-its-own-source-control-system/",
+          "why": "Industry framing: large-monorepo signal, not abandon-git."
+        }
+      ],
+      "slug": "2026-11-07-redesigning-source-control",
+      "html": "lessons/2026-11-07-redesigning-source-control/lesson.html",
+      "audio_bytes": 6398162,
+      "audio": "audio/2026-11-07-redesigning-source-control.mp3",
+      "audio_url": "https://christopherchiu.github.io/learning-lab/audio/2026-11-07-redesigning-source-control.mp3"
+    },
     {
       "title": "Welcome to Learning Lab",
       "summary": "How your personal audio lessons work: send a link, get a researched, blog-quality lesson narrated for you.",
@@ -30,11 +80,71 @@
   "progress": {
     "learner": {
       "name": "Chris",
-      "background": "Engineering leader; likes technical depth (Anthropic / OpenAI engineering-blog style).",
+      "background": "Head of engineering; fluent in AI and engineering topics. Skip basics, expand the genuinely technical parts.",
       "prefers": "Audio-first, ~10 minute lessons, links to tweets/blogs as starting points."
     },
-    "concepts": [],
-    "suggested_next": [],
-    "feedback_log": []
+    "concepts": [
+      {
+        "name": "Agent-scale source control (Scion)",
+        "level": "working",
+        "lessons": [
+          "2026-11-07-redesigning-source-control"
+        ],
+        "last_seen": "2026-11-07"
+      },
+      {
+        "name": "Monorepo VCS (git vs centralized/changeset models)",
+        "level": "working",
+        "lessons": [
+          "2026-11-07-redesigning-source-control"
+        ],
+        "last_seen": "2026-11-07"
+      },
+      {
+        "name": "Derived data / Bonsai-style changesets",
+        "level": "intro",
+        "lessons": [
+          "2026-11-07-redesigning-source-control"
+        ],
+        "last_seen": "2026-11-07"
+      },
+      {
+        "name": "Post-merge CI vs merge queues at agent volume",
+        "level": "intro",
+        "lessons": [
+          "2026-11-07-redesigning-source-control"
+        ],
+        "last_seen": "2026-11-07"
+      }
+    ],
+    "suggested_next": [
+      {
+        "topic": "Meta Sapling / Mononoke Bonsai in more depth",
+        "why": "Scion\u2019s changeset + derived-data design is explicitly Bonsai-shaped; this is the primary prior art.",
+        "source_url": "https://sapling-scm.com/"
+      },
+      {
+        "topic": "Google Piper / CitC virtual workspaces",
+        "why": "The other cited monorepo VCS; useful contrast on always-online clients and sparse working copies.",
+        "source_url": "https://en.wikipedia.org/wiki/Piper_(source_control_system)"
+      },
+      {
+        "topic": "Merge queues vs post-merge testing at high land rate",
+        "why": "Anthropic dropped the global merge lock; this is the operational decision most orgs will face first.",
+        "source_url": "https://www.anthropic.com/research/redesigning-source-control"
+      },
+      {
+        "topic": "Claude Tag / agent-operated production health",
+        "why": "The \u2018superfan\u2019 ops pattern is a concrete next step from this post\u2019s lessons.",
+        "source_url": "https://www.anthropic.com/news/introducing-claude-tag"
+      }
+    ],
+    "feedback_log": [
+      {
+        "date": "2026-11-07",
+        "lesson": "2026-11-07-redesigning-source-control",
+        "note": "For blog posts, often wants a faithful audio adaptation of the post with technical expansions rather than a full research lesson."
+      }
+    ]
   }
 }

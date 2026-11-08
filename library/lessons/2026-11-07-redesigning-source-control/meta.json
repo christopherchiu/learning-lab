@@ -1,0 +1,28 @@
+{
+  "title": "Redesigning source control at Anthropic",
+  "summary": "Audio adaptation of Anthropic’s Scion post: why git broke at 30k merges/day, how a changeset-based VCS and three-tier cache replaced mirrors, and why they still don’t want you to fork git.",
+  "source_type": "blog",
+  "source_url": "https://www.anthropic.com/research/redesigning-source-control",
+  "topics": ["Source control", "Developer infrastructure", "Agentic coding", "Monorepos"],
+  "created_at": "2026-11-08T07:15:00Z",
+  "duration_secs": 799.7,
+  "quiz": [
+    {
+      "q": "Why did git’s design become the bottleneck rather than a feature?",
+      "a": "Git assumes complete offline clones; Anthropic’s always-online agents and CI hit ~100 GB history tens of millions of times a day, which mirrors could not absorb."
+    },
+    {
+      "q": "What is a Scion changeset compared with a git commit?",
+      "a": "A write-ahead-log entry of files changed vs the first parent plus content-addressed blobs, not a full tree; blame and history are derived data."
+    },
+    {
+      "q": "What do they want other companies to copy?",
+      "a": "Not Scion itself—server-side source-control APIs, cacheable immutable fetches, and sparse checkouts that compose inside git forges."
+    }
+  ],
+  "related": [
+    {"title": "Mononoke (Sapling server)", "url": "https://github.com/facebook/sapling/blob/main/eden/mononoke/README.md", "why": "Prior art Scion cites for Bonsai-style changesets and derived data."},
+    {"title": "Simon Willison’s notes", "url": "https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/", "why": "Concise practitioner summary and the offline-support critique."},
+    {"title": "The Pragmatic Engineer Pulse", "url": "https://blog.pragmaticengineer.com/the-pulse-anthropic-builds-its-own-source-control-system/", "why": "Industry framing: large-monorepo signal, not abandon-git."}
+  ]
+}

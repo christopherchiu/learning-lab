@@ -1,0 +1,95 @@
+This is an audio adaptation of Anthropic’s research post, Redesigning source control at Anthropic, updated mid-October twenty twenty-six, written by Nick G. and the source control team. By the end you’ll have their argument, the architecture of Scion, and a couple of technical asides a head of engineering would actually want.
+
+Coding is no longer the bottleneck. Claude iterates research loops, micro-optimizes programs, and stands up services faster than human-scale git, C I, and review can absorb. Anthropic’s answer was Scion, an in-house version control system, plus a review surface called Antique. They migrated the monorepo off git in five months.
+
+In May twenty twenty-six they averaged about twenty-five hundred merges per day. By September it was over thirty thousand. They do not expect that growth to slow. Latent demand for merging is, in their words, practically infinite. A chart in the post shows daily merges climbing steeply from January through September.
+
+They say the monorepo is unusual, but they expect other A I-heavy orgs to hit the same pressure points. Git is decentralized. Every clone is a complete repo that can diff, blame, and check out offline. That is why git won. It is also why this repo no longer fits.
+
+The history of main alone is almost one hundred gigabytes. A compressed working copy is over twenty-five gigabytes. They do on the order of twenty-five million C I checkouts per day, before developer machines, agent sandboxes, and research jobs. Fetched naively, that would be over six hundred petabytes of git traffic per day.
+
+They used the standard toolkit. Shallow clones, sparse checkouts, promisor remotes, internal mirrors, seeds in blob storage. At peak they ran several hundred git mirrors. Seeds drifted from the tip of main. History operations on partial clones got fragile. They were using git as a centralized system with one authority, while almost every client was an always-online agent or job. The offline, full-clone properties were undermining scale.
+
+So they asked: if you designed source control assuming agents are always online, what would it look like?
+
+Prior art is Google’s Piper and Meta’s Sapling, especially the server called Mononoke and its Bonsai data model. Scion’s principles, in order.
+
+Clients are always online. Fetch on demand from a reachable server.
+
+Client–server asymmetry. The server does history, blame, commits, merges, rebases. The client is a bounded object cache, working-copy layout, filesystem watcher, and ergonomic U I. It computes very little. It stores much less.
+
+A source-control service as a platform. The same queries the client uses are A P Is. Jobs often need no local repo. Automated bisect and revert only work at this scale because ancestry and blame are cheap R P Cs.
+
+Everything is horizontally scalable. There is no fully materialized copy of the repo anywhere, even on the server. No packfiles, so no repo maintenance.
+
+Commits are cheap, incremental, and lock-free. Create, rebase, and merge happen on the server. There is nothing to push. Cost must scale with the change, not the repo. They discourage refs except main and release branches, because global state every server must agree on is a scaling cliff.
+
+The working copy is optional and sparse by design. Need a diff versus merge-base? Ask the server. Sparse checkouts only include requested directories. Virtualized checkouts materialize files on read.
+
+Okay, so how does it actually work?
+
+The unit of work is a changeset: an entry in a write-ahead log. It stores most of what a git commit would, but instead of pointing at a full tree it stores the files that changed relative to its first parent, plus content-addressed pointers to compressed blobs. Changesets are created server-side and are available everywhere immediately.
+
+A figure in the post shows that shape: a parent pointer, a changed-path list, blob hashes. No full tree snapshot.
+
+No packfiles to accept. No locking or cross-server coordination. No refs to move on the commit path. Refs exist, but moving one is a compare-and-swap on a single Spanner row, separate from creating the changeset.
+
+A quick aside on first-parent diffs. Storing the delta versus the first parent of a merge is a trunk-based choice. In a monorepo people almost only care about history and blame on the main line. Side-branch file identity matters less than what landed on main.
+
+A quick aside on Bonsai. Meta’s Bonsai changeset is the same idea. A commit is a structured list of file changes plus metadata, not a git-style snapshot of every tree. Derived data—manifests, blame, copy detection—is computed from that log. Scion’s changeset plus derived data is that lineage, sitting on Spanner instead of Mononoke’s backends.
+
+A changeset alone cannot answer who last edited this line. Scion builds derived data from the log: blame, path history, skip lists on the commit graph. Each type is defined recursively. The value for a changeset is computed from its parents. New types are easy. Each type can be eager or lazy. Clients never see internals, so they can rewrite indices without a client bump.
+
+A small fleet of Scion servers answers get-changeset, diff, merge-base, blob fetch. All data is content-addressed and immutable, so any server can cache without coordination. Servers are large caches that also compute derived data and write it back to Spanner.
+
+Early in the migration, before they had their own client, Scion only answered metadata queries. Content and working copies needed a different protocol.
+
+The scn client does not tell the server what it already has. That is git’s have-slash-want negotiation. Instead it asks only for trees and blobs it wants. From a root tree it fills missing trees recursively, then blobs. Every request is for an immutable object, so it looks like a tiered cache, not a packfile conversation. Sparse and virtual checkouts need no special case. The client simply does not ask for unwanted trees.
+
+On a node, the client talks over a socket to scion-daemon, which stores objects for the whole machine. Jobs on the same node reuse objects. Each daemon starts from a periodically refreshed snapshot, then talks only to regional scion-cache servers. Caches stream objects from memory in the disk format the daemon will write. No delta compression. No computing a custom pack. Misses go to authoritative scion-servers, which read Spanner or cloud storage.
+
+All three tiers speak the same R P Cs. The client does not know the topology. They enforce the tiers so a regional cache failure cannot stampede the origin.
+
+Results they report. Each tier over ninety-nine percent cache hit rate. Infrastructure footprint two hundred times smaller in C P U and memory than git mirrors. C I and research checkouts two orders of magnitude faster—seconds rather than minutes. C I alone a twenty-five percent C P U capacity win. No repo maintenance on clients or caches.
+
+They started Scion around the time Claude Mythos Preview and Claude Tag were available internally. Those models both created the merge flood and sped up building the system that absorbed it.
+
+Example. They had handwritten a git-to-Scion ingestion pipeline. An early Mythos snapshot, asked to rewrite it with no further instructions, produced a version that used twenty times less memory and was four times faster, keeping ingestion-order invariants. A chart of weekly merges into the Scion and Antique codebases themselves climbs through twenty twenty-six.
+
+Lessons.
+
+Small teams, fast migrations. Seven people built Scion, Antique, and half a dozen related systems, and fully migrated in five months while daily merges grew ten times. Historically this class of version control took years and many more engineers.
+
+Engineers are not less valuable. The work changed. Those engineers now rate Claude as better at writing code than they are. They still own inter-system design and tradeoffs. Very often the job was to tell Claude no. Agents violate core constraints to satisfy a pattern that should never have been allowed. Example: systems brute-force when a change merged to main by linearly reading the log instead of asking the review tool. Adversarial review is effective but myopic. Humans had to stop over-engineering in response to hypothetical distrust of other internal services. They still review every change—intent, not every line.
+
+Tests and optimizations got denser. Even on a tight timeline they built hermetic simulations of every non-trivial infra interaction, plus fuzzing and rate limiting. Claude found optimizations—for example ancestry queries missing an index—that would have taken an expert days. A figure shows observed performance improvements on native Scion repos.
+
+Monorepo security as a first-class design. Rich repo access control and per-directory permissions so sensitive code can live in the monorepo. Antique can express semantic approval constraints, comment-only versus logical change, so humans spend attention on consequential diffs.
+
+Ops via superfans. Slack channels where Claude Tag is tasked to obsess over one component—scion-daemon, scion-cache, Antique merge queue—with telemetry and logs. Traditional alerts still exist. Superfans catch subtle, novel issues that make static alerts look one-dimensional.
+
+Priors that no longer hold. A classic global merge-queue lock does not make sense when hundreds or thousands of changes can land while tests run. They invested in post-merge and pre-deploy automated testing. Concurrent changes can conflict. Claude typically fixes conflicts faster than humans notice them.
+
+They are not shipping Scion as git for everyone. It only makes sense for enormous monorepos—tens of thousands of engineers or swarms of agents. Anthropic’s internal token spend is also unlike a typical company. They will not open-source a public Scion. It diverges from git, and review, search, and C I are bespoke.
+
+What they want instead: steal the ideas inside git. A git server need not work like a git client. Server-side R P Cs for history, diff, and blame could be standardized across forges. Negotiation need not be have-slash-want. Sparse and shallow features should compose. They frame this as a narrow contribution to GitHub, GitLab, and open source: an early look at how agentic development stresses these systems.
+
+A little of the conversation. Simon Willison summarized the numbers and noted the Subversion-like centralization. Offline was deprioritized because Claude is always online. The Pragmatic Engineer treated it as a pulse item for large-monorepo shops, not a signal to abandon git. The pushback, including Anthropic’s own, is consistent. Do not copy Scion. Copy the server-side query and sparse-fetch ideas when git mirrors start to hurt.
+
+If you run an engineering org, the useful questions are not should we write a version control system. They are: where is human-scale infra the bottleneck for agent throughput—checkout time, blame, merge queue, review attention. Which queries should be R P Cs instead of local clones. And as merge volume rises, does a locked merge queue still match how you actually ship, or do you need post-merge repair as a first-class path.
+
+Three questions to lock it in.
+
+First. Why did git’s design become the bottleneck rather than a feature? Take a second.
+
+Because git assumes every client wants a complete, offline-capable clone. Anthropic’s clients are always-online agents and C I jobs hitting a hundred-gigabyte history tens of millions of times a day. Full clones and even hundreds of mirrors could not keep up.
+
+Second. What is a Scion changeset, compared with a git commit? Take a second.
+
+A changeset is a write-ahead-log entry of files changed relative to the first parent, plus content-addressed blobs. It is not a pointer to a full tree. Blame and path history are derived data computed from that log.
+
+Third. What do they want other companies to copy? Take a second.
+
+Not Scion itself. Server-side source-control A P Is, cacheable immutable object fetch, and sparse checkouts that compose—ideas that can live inside git forges without replacing git.
+
+That’s the post. Next refresh, it will be in your podcast feed.
