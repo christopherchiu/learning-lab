@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Learning Lab</title>
+    <link>https://christopherchiu.github.io/learning-lab</link>
+    <atom:link href="https://christopherchiu.github.io/learning-lab/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Chris&#x27;s personal audio lessons, researched, written and narrated by his Learning Coach agent.</description>
+    <language>en-us</language>
+    <itunes:author>Chris Chiu</itunes:author>
+    <itunes:image href="https://christopherchiu.github.io/learning-lab/cover.png"/>
+    <itunes:category text="Education"/>
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:block>Yes</itunes:block>
+    <item>
+      <title>Welcome to Learning Lab</title>
+      <description>How your personal audio lessons work: send a link, get a researched, blog-quality lesson narrated for you.
+
+Read the full lesson: https://christopherchiu.github.io/learning-lab/#/2026-11-07-welcome</description>
+      <guid isPermaLink="false">2026-11-07-welcome</guid>
+      <pubDate>Sun, 08 Nov 2026 06:45:00 +0000</pubDate>
+      <link>https://christopherchiu.github.io/learning-lab/#/2026-11-07-welcome</link>
+      <enclosure url="https://christopherchiu.github.io/learning-lab/audio/2026-11-07-welcome.mp3" length="579334" type="audio/mpeg"/>
+      <itunes:duration>72</itunes:duration>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+  </channel>
+</rss>

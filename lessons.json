@@ -1,0 +1,40 @@
+{
+  "title": "Learning Lab",
+  "base_url": "https://christopherchiu.github.io/learning-lab",
+  "updated_at": "2026-11-08T06:57:01.089931+00:00",
+  "lessons": [
+    {
+      "title": "Welcome to Learning Lab",
+      "summary": "How your personal audio lessons work: send a link, get a researched, blog-quality lesson narrated for you.",
+      "source_type": "topic",
+      "source_url": "",
+      "topics": [
+        "Getting started"
+      ],
+      "created_at": "2026-11-08T06:45:00Z",
+      "duration_secs": 72.4,
+      "quiz": [
+        {
+          "q": "What should you send your Learning Coach to start a lesson?",
+          "a": "A link: a tweet, blog post, paper or thread you want to understand."
+        }
+      ],
+      "related": [],
+      "slug": "2026-11-07-welcome",
+      "html": "lessons/2026-11-07-welcome/lesson.html",
+      "audio_bytes": 579334,
+      "audio": "audio/2026-11-07-welcome.mp3",
+      "audio_url": "https://christopherchiu.github.io/learning-lab/audio/2026-11-07-welcome.mp3"
+    }
+  ],
+  "progress": {
+    "learner": {
+      "name": "Chris",
+      "background": "Engineering leader; likes technical depth (Anthropic / OpenAI engineering-blog style).",
+      "prefers": "Audio-first, ~10 minute lessons, links to tweets/blogs as starting points."
+    },
+    "concepts": [],
+    "suggested_next": [],
+    "feedback_log": []
+  }
+}

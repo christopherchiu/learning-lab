@@ -1,0 +1,11 @@
+{
+  "title": "Welcome to Learning Lab",
+  "summary": "How your personal audio lessons work: send a link, get a researched, blog-quality lesson narrated for you.",
+  "source_type": "topic",
+  "source_url": "",
+  "topics": ["Getting started"],
+  "created_at": "2026-11-08T06:45:00Z",
+  "duration_secs": 72.4,
+  "quiz": [{"q": "What should you send your Learning Coach to start a lesson?", "a": "A link: a tweet, blog post, paper or thread you want to understand."}],
+  "related": []
+}

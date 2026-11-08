@@ -1,0 +1,9 @@
+Welcome to Learning Lab. This is your personal audio feed, and every episode here is written and narrated just for you.
+
+Here's how it works. When you come across something worth understanding, a tweet, a blog post, a paper, a thread everyone's arguing about, send the link to your Learning Coach. It reads the source, then goes looking for the context around it: the paper or post behind the claim, the replies and quote posts that are getting traction, and the people pushing back. Then it writes a proper lesson, the kind of thing you'd read on a good engineering blog, and turns it into an episode like this one.
+
+Each lesson tries to do three things. First, explain the idea plainly, from the ground up, so you actually understand why it works and not just what it is. Second, show where it sits in the bigger conversation: who agrees, who doesn't, and what's still unsettled. And third, end with a few quick questions so you can check what stuck.
+
+Over time, your coach keeps track of what you've covered and how deep you've gone, and it'll start suggesting what to learn next. You'll find those suggestions in the Up Next tab of the app.
+
+That's it. Send your first link whenever you're ready.
